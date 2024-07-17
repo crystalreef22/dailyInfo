@@ -38,6 +38,8 @@ def cycleDay(dDay=0):
                         return cycle
                     except:
                         print("cal: could not extract: no school?")
+        else:
+            print("no events")
 
     else:
         raise Exception(f"cal: Failed to fetch iCal file. Status code: {response.status_code}")
