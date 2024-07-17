@@ -1,9 +1,11 @@
 #!/bin/python3
 from provider import infotext, cDay
-import termux
 import time
+import subprocess
 
-termux.Notification.notify("d"+str(cDay), infotext, nid=8363, args=("ongoing","ongoing"), )
+
+subprocess.run(["termux-notification", "-t", "d"+str(cDay), "-c", infotext, "--icon", "filter_"+str(cDay), "--id", "8363", "--ongoing", "--button1", "dismiss", "--button1-action", "termux-notification-remove 8363"])
+
 '''
 age: termux-notification [options]
 Display a system notification. Content text is specified using -c/--content or read from stdin.                                                                                 Please read --help-actions for help with action arguments.                                --action action          action to execute when pressing the notification
