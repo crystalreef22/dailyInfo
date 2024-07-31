@@ -19,7 +19,7 @@ if TODAYSCHEDOVERRIDE == None:
         todaySched.append(SCHEDULE[i])
         todaySchedAAAA.append(i)
 else:
-    todaySched = TODAYSCHEDULEOVERRIDE
+    todaySched = TODAYSCHEDOVERRIDE
 
 
 print(todaySched)
