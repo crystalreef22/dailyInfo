@@ -6,13 +6,11 @@ def cycleDay(dDay=0):
     url = "https://site redacted/calendar/calendar_7187.ics"
 
     # Fetch the iCal file
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
 
     # Check if the request was successful
     if response.status_code == 200:
         calendar_data = response.text
-        #with open('SSASScal.ics', 'rb') as file:
-        #     calendar_data = file.read()
 
         # Parse the iCal data
         calendar = icalendar.Calendar.from_ical(calendar_data)
