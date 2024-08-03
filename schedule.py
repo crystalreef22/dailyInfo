@@ -1,27 +1,30 @@
 import datetime as dt
-
-def timePlusDelta(time, timedelta):
-    return (dt.datetime.combine(dt.date(1,1,1),time) + timedelta).time()
+import time
 
 class schedule:
     def __init__(self, periodList):
         self.periodList = periodList
         self.currentPeriodIndex = 0
-        self.periodTimeLeft
-        self.currentTime
+        # self.periodTimeLeft
+        # self.currentDatetime
         self.updatePeriod()
     
     def updatePeriod(self, testDeltaTime = dt.timedelta(0)) -> None:
-        self.currentTime = (dt.datetime.now() + testDeltaTime).time()
+        self.currentDatetime = dt.datetime.now() + testDeltaTime
+        i = None
         for i, period in enumerate(self.periodList):
-            t = period["time"]
-            if t > self.currentTime:
+            t = dt.datetime.combine(self.currentDatetime.date(), period["time"])
+            if t > self.currentDatetime:
+                i -= 1;
                 break
-        else:
+
+        if i is None:
             raise IndexError("PeriodList could not be iterated")
+
+        period = self.periodList[i]
         
         self.currentPeriodIndex = i
-        self.periodTimeLeft = timePlusDelta(period["time"], period["duration"]) - self.currentTime
+        self.periodTimeLeft = dt.datetime.combine(self.currentDatetime.date(), period["time"]) + period["duration"] - self.currentDatetime
 
     def getPeriodTimeLeft(self):
         return self.periodTimeLeft
@@ -35,8 +38,8 @@ class schedule:
     def getPeriodSymbol(self, lookahead = 0):
         return self.periodList[self.currentPeriodIndex + lookahead]["periodSymbol"]
 
-    def periodIsOver(self):
-        return self.periodTimeLeft < dt.timedelta(0)
+    def getPeriodIsStillGoing(self):
+        return self.periodTimeLeft >= dt.timedelta(0)
         
 
 
@@ -80,3 +83,7 @@ if __name__=="__main__":
             },
     ]
     sch = schedule(periodList)
+    for i in range(0,120):
+        sch.updatePeriod(testDeltaTime=dt.timedelta(minutes = i))
+        print(sch.getPeriodName(), sch.getPeriodSymbol(), sch.getPeriodTimeLeft(), sch.getPeriodIsStillGoing(), "          ", end="\r")
+        time.sleep(0.2)
