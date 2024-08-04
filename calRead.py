@@ -2,7 +2,11 @@ import requests
 import icalendar
 from datetime import datetime, timedelta
 
-def cycleDay(dDay=0):
+def printIf(condition, *args, end='\n', sep=' ', flush=False):
+    if condition:
+        print(*args, end=end, sep=sep, flush=flush)
+
+def cycleDay(dDay=0, verbose=False):
     url = "https://site redacted/calendar/calendar_7187.ics"
 
     # Fetch the iCal file
@@ -27,17 +31,17 @@ def cycleDay(dDay=0):
 
                 # Check if it occurs today
                 if start.dt == today:
-                    print(f"cal: Event: {summary}")
+                    printIf(verbose,f"cal: Event: {summary}")
                     try:
                         cycle=int(summary.lstrip("SS Cycle Day "))
-                        print(f"cal: extracted day: {cycle}")
+                        printIf(verbose, f"cal: extracted day: {cycle}")
                         if not (0 < cycle < 9):
-                            print("oh no. Cycle day outofRange")
+                            printIf(verbose,"oh no. Cycle day outofRange")
                         return cycle
                     except:
-                        print("cal: could not extract: no school?")
+                        printIf(verbose,"cal: could not extract: no school?")
         else:
-            print("no events")
+            printIf(verbose,"no events")
 
     else:
         raise Exception(f"cal: Failed to fetch iCal file. Status code: {response.status_code}")
