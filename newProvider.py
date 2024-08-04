@@ -12,23 +12,27 @@ parser = argparse.ArgumentParser(
                     description='Provides daily information for school schedule') #,epilog='txt at end of help')
 
 parser.add_argument('--dateoffset', type=int)
+parser.add_argument('--cycleday', type=int, help="override cycle day")
 parser.add_argument('--nextdaytime', type=str, help="not implemented")
 parser.add_argument('-p', '--prompt',
                     action='store_true')
 
 args = parser.parse_args()
 
-offset = args.dateoffset
-if offset is None:
-    offset = 0
 
-if args.prompt:
-    try:
-        offset = int(input("offset > "))
-    except:
-        print("-> 0")
+if args.cycleday is not None:
+    cycleDay = args.cycleday
+else:
+    offset = args.dateoffset
+    if offset is None:
+        offset = 0
 
-cycleDay = calRead.cycleDay(offset, verbose=True)
+    if args.prompt:
+        try:
+            offset = int(input("offset > "))
+        except:
+            print("-> 0")
+    cycleDay = calRead.cycleDay(offset, verbose=True)
 
 # Check day of week
 isWeekday = True
@@ -95,8 +99,14 @@ sch = schedule.schedule(pl)
 
 print("eaLunch:",sch.getEaLunch())
 
-for i in range(-100,120):
+for i in range(-400,120):
     sch.updatePeriod(testDeltaTime=dt.timedelta(minutes = i))
     timeLeft = sch.getPeriodTimeLeft()
-    print(sch.getPeriodName(), sch.getPeriodSymbol(), timeLeft, timeLeft >= dt.timedelta(0), "          ", end="\r")
+    try:
+        if timeLeft >= dt.timedelta(0):
+            print(sch.getPeriodName(), sch.getPeriodSymbol(), timeLeft, "          ", end="\r")
+        else:
+            print("->", sch.getPeriodName(lookahead=1), sch.getPeriodSymbol(lookahead=1), sch.getPeriodTimeTil(lookahead=1), "          ", end="\r")
+    except IndexError:
+        break
     time.sleep(0.2)

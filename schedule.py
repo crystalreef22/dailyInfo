@@ -35,6 +35,10 @@ class schedule:
         period = self.periodList[self.currentPeriodIndex + lookahead]
         return period["datetime"] + period["duration"] - self.currentDatetime
 
+    def getPeriodTimeTil(self, lookahead=0):
+        period = self.periodList[self.currentPeriodIndex + lookahead]
+        return period["datetime"] - self.currentDatetime
+
     def getCurrentPeriodIndex(self):
         return self.currentPeriodIndex
     
