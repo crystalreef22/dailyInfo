@@ -5,10 +5,16 @@ class schedule:
     def __init__(self, periodList):
         self.periodList = periodList
         self.currentPeriodIndex = 0
-        # self.periodTimeLeft
         # self.currentDatetime
         self.updatePeriod()
     
+    def getEaLunch(self):
+        '''Returns optional bool (hopefully)'''
+        try:
+            return self.periodList[3]["eaLunch"] # check period 4
+        except KeyError:
+            return None
+
     def updatePeriod(self, testDeltaTime = dt.timedelta(0)) -> None:
         self.currentDatetime = dt.datetime.now() + testDeltaTime
         i = None
@@ -25,11 +31,9 @@ class schedule:
         period = self.periodList[i]
         
         self.currentPeriodIndex = i
-        # self.periodTimeLeft = dt.datetime.combine(self.currentDatetime.date(), period["time"]) + period["duration"] - self.currentDatetime
-        self.periodTimeLeft = period["datetime"] + period["duration"] - self.currentDatetime
-
-    def getPeriodTimeLeft(self):
-        return self.periodTimeLeft
+    def getPeriodTimeLeft(self, lookahead=0):
+        period = self.periodList[self.currentPeriodIndex + lookahead]
+        return period["datetime"] + period["duration"] - self.currentDatetime
 
     def getCurrentPeriodIndex(self):
         return self.currentPeriodIndex
@@ -39,9 +43,6 @@ class schedule:
     
     def getPeriodSymbol(self, lookahead = 0):
         return self.periodList[self.currentPeriodIndex + lookahead]["periodSymbol"]
-
-    def getPeriodIsStillGoing(self):
-        return self.periodTimeLeft >= dt.timedelta(0)
         
 def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday: bool = False, datetimesOverrideFunction = None, durationsOverrideFunction = None, periodOrderOverride = None, periodIndexListOverride = None, currentDate = None) -> list:
     '''
@@ -76,7 +77,6 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
     except KeyError:
         eaLunch = False # Just a dummy value, does not matter anyway
 
-    print("eaLunch: ", eaLunch)
     
 
     # Fixme: this part does not work
@@ -198,7 +198,7 @@ if __name__=="__main__":
                 },
                 {
                     "eaLunch": False,
-                    "periodName":"Magic spells 101",
+                    "periodName":"Magic Charms 101",
                     "periodSymbol":"🪄",
                 },
                 {
@@ -213,7 +213,11 @@ if __name__=="__main__":
             print(i["datetime"], i["duration"])
 
         sch = schedule(pl)
-        for i in range(-1000,120):
+
+        print("eaLunch:",sch.getEaLunch())
+
+        for i in range(-100,120):
             sch.updatePeriod(testDeltaTime=dt.timedelta(minutes = i))
-            print(sch.getPeriodName(), sch.getPeriodSymbol(), sch.getPeriodTimeLeft(), sch.getPeriodIsStillGoing(), "          ", end="\r")
+            timeLeft = sch.getPeriodTimeLeft()
+            print(sch.getPeriodName(), sch.getPeriodSymbol(), timeLeft, timeLeft >= dt.timedelta(0), "          ", end="\r")
             time.sleep(0.2)

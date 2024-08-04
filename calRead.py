@@ -41,5 +41,7 @@ def cycleDay(dDay=0):
 
     else:
         raise Exception(f"cal: Failed to fetch iCal file. Status code: {response.status_code}")
+    
+    raise Exception(f"cal: Nothing returned")
 
 
