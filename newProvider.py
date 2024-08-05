@@ -46,6 +46,7 @@ match dt.datetime.now().weekday():
         isWeekday = False
 
 
+
 dayISchedulePeriodList = [
         {
             "eaLunch": True,
@@ -93,20 +94,26 @@ pl = schedule.generatePeriodList(dayISchedulePeriodList, cycleDay, isWednesday)
 for i in pl:
     print(i)
 for i in pl:
-    print(i["datetime"], i["duration"])
+    if i["type"] != "info":
+        print(i["datetime"], i["duration"])
 
 sch = schedule.schedule(pl)
 
 print("eaLunch:",sch.getEaLunch())
 
-for i in range(-400,120):
-    sch.updatePeriod(testDeltaTime=dt.timedelta(minutes = i))
-    timeLeft = sch.getPeriodTimeLeft()
-    try:
-        if timeLeft >= dt.timedelta(0):
-            print(sch.getPeriodName(), sch.getPeriodSymbol(), timeLeft, "          ", end="\r")
-        else:
-            print("->", sch.getPeriodName(lookahead=1), sch.getPeriodSymbol(lookahead=1), sch.getPeriodTimeTil(lookahead=1), "          ", end="\r")
-    except IndexError:
-        break
-    time.sleep(0.2)
+for i in range(-700,120):
+    classHasStarted = sch.updatePeriod(testDeltaTime=dt.timedelta(minutes = i))
+    if classHasStarted:
+        timeLeft = sch.getPeriodTimeLeft()
+        try:
+            if timeLeft >= dt.timedelta(0):
+                print(sch.getPeriodName(), sch.getPeriodSymbol(), timeLeft, "               ", end="\r")
+            else:
+                print(sch.getPeriodSymbol(), "→", sch.getPeriodName(lookahead=1), sch.getPeriodSymbol(lookahead=1), sch.getPeriodTimeTil(lookahead=1), "               ", end="\r")
+        except:
+            print("fixme: error on newProvider.py line 116")
+            break
+    else:
+        print("Wait →", sch.getPeriodName(), sch.getPeriodSymbol(), sch.getPeriodTimeTil(), "               ", end="\r")
+
+    time.sleep(0.05)

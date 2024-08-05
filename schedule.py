@@ -11,15 +11,21 @@ class schedule:
     def getEaLunch(self):
         '''Returns optional bool (hopefully)'''
         try:
-            return self.periodList[3]["eaLunch"] # check period 4
+            assert self.periodList[-1]["type"] == "info"
+            return self.periodList[-1]["eaLunch"]
         except KeyError:
             return None
 
-    def updatePeriod(self, testDeltaTime = dt.timedelta(0)) -> None:
+    def updatePeriod(self, testDeltaTime = dt.timedelta(0)) -> bool:
+        '''return false if class has not started yet'''
         self.currentDatetime = dt.datetime.now() + testDeltaTime
         i = None
         for i, period in enumerate(self.periodList):
             # t = dt.datetime.combine(self.currentDatetime.date(), period["time"])
+            if period["type"] == "info":
+                i -= 1
+                break
+            
             t = period["datetime"]
             if t > self.currentDatetime:
                 i -= 1;
@@ -28,9 +34,15 @@ class schedule:
         if i is None:
             raise IndexError("PeriodList could not be iterated")
 
-        period = self.periodList[i]
-        
+        # period = self.periodList[i]
+
+        if i == -1:
+            self.currentPeriodIndex = 0
+            return False
+
         self.currentPeriodIndex = i
+        return True
+
     def getPeriodTimeLeft(self, lookahead=0):
         period = self.periodList[self.currentPeriodIndex + lookahead]
         return period["datetime"] + period["duration"] - self.currentDatetime
@@ -48,6 +60,20 @@ class schedule:
     def getPeriodSymbol(self, lookahead = 0):
         return self.periodList[self.currentPeriodIndex + lookahead]["periodSymbol"]
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday: bool = False, datetimesOverrideFunction = None, durationsOverrideFunction = None, periodOrderOverride = None, periodIndexListOverride = None, currentDate = None) -> list:
     '''
     periodOrderOverride: reorders the list as such: [1,2,3,4,5,6] or None is normal, [1,2,3,5,4,6] is period 5 and 4 switched, etc.
@@ -79,7 +105,7 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
     try:
         eaLunch = periodList[3]["eaLunch"] # check period 4
     except KeyError:
-        eaLunch = False # Just a dummy value, does not matter anyway
+        eaLunch = None # Just a dummy value, does not matter anyway
 
     
 
@@ -109,8 +135,44 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
             ip += 1
         periodList[i]["datetime"] = times[i + ip]
         periodList[i]["duration"] = durations[i + ip]
+        periodList[i]["type"] = "standard"
+        periodList[i].pop("eaLunch", None)
 
-    return periodList
+    finalPeriodList = []
+    for i in range(len(periodList)):
+        if i == 2:
+            if durations[2] >= dt.timedelta(0):
+                finalPeriodList.append(
+                    {
+                        "datetime": times[2],
+                        "duration": durations[2],
+                        "type": "clubOrAssembly",
+                        "periodName" : "club or assembly",
+                        "periodSymbol" : "🏛️",
+                    })
+            else:
+                print("!!!!!!!!!!!!!!!!! Skipping club period")
+        if i == (3 if eaLunch else 4):
+            if durations[i+1] >= dt.timedelta(0):
+                finalPeriodList.append(
+                    {
+                        "datetime": times[i + 1],
+                        "duration": durations[i + 1],
+                        "type": "lunch",
+                        "periodName": "Lunch",
+                        "periodSymbol": "🍽️",
+                    }
+                )
+        finalPeriodList.append(periodList[i])
+
+    finalPeriodList.append(
+        {
+            "type":"info",
+            "eaLunch": eaLunch,
+        }
+    )
+
+    return finalPeriodList
 
 
 
@@ -214,14 +276,15 @@ if __name__=="__main__":
         for i in pl:
             print(i)
         for i in pl:
-            print(i["datetime"], i["duration"])
+            if i["type"] == "standard":
+                print(i["datetime"], i["duration"])
 
         sch = schedule(pl)
 
         print("eaLunch:",sch.getEaLunch())
 
-        for i in range(-100,120):
+        for i in range(-700,120):
             sch.updatePeriod(testDeltaTime=dt.timedelta(minutes = i))
             timeLeft = sch.getPeriodTimeLeft()
             print(sch.getPeriodName(), sch.getPeriodSymbol(), timeLeft, timeLeft >= dt.timedelta(0), "          ", end="\r")
-            time.sleep(0.2)
+            time.sleep(0.05)
