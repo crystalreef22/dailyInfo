@@ -6,16 +6,17 @@ import time
 # User
 import calRead
 import schedule
+import newconfig as config
 
 parser = argparse.ArgumentParser(
                     prog='dailyInfo provider',
                     description='Provides daily information for school schedule') #,epilog='txt at end of help')
 
 parser.add_argument('--dateoffset', type=int)
-parser.add_argument('--cycleday', type=int, help="override cycle day")
-parser.add_argument('--nextdaytime', type=str, help="not implemented")
-parser.add_argument('-p', '--prompt',
-                    action='store_true')
+parser.add_argument('--cycleday', type=int, help="override cycle day. Takes precedance over any prompt args")
+parser.add_argument('--dayendtime', type=str, help="not implemented")
+parser.add_argument('-p', '--prompt_offset', type=str, help="y,Y,yEs,trUe/n,N,nO,faLse")
+parser.add_argument('--prompt_cycleday', type=str, help="y,Y,yEs,trUe/n,N,nO,faLse")
 
 args = parser.parse_args()
 
@@ -26,25 +27,43 @@ else:
     offset = args.dateoffset
     if offset is None:
         offset = 0
+    
+    if args.prompt_offset is None:
+        pb = config.prompt_offset
+        assert type(pb) is bool
+        print("args.prompt is default is", pb)
+    elif args.prompt_offset.lower() in ['y','yes','true']:
+        print("args.prompt is true")
+        pb = True
+    elif args.prompt_offset.lower() in ['n','no','false']:
+        print("args.prompt is false")
+        pb = False
+    else:
+        pb = config.prompt_offset
+        assert type(pb) is bool
+        print("args.prompt is default is", pb)
 
-    if args.prompt:
+    if pb:
         try:
             offset = int(input("offset > "))
         except:
             print("-> 0")
+
+
     cycleDay = calRead.cycleDay(offset, verbose=True)
 
 # Check day of week
-isWeekday = True
-isWednesday = False    
-match dt.datetime.now().weekday():
+
+weekday = dt.datetime.now().weekday()
+'''
+match weekday:
     case 2:
         isWednesday = True
     case 5:
-        isWeekday = False    
+        isWeekday = False
     case 6:
         isWeekday = False
-
+'''
 
 
 dayISchedulePeriodList = [
@@ -90,7 +109,7 @@ dayISchedulePeriodList = [
 ]
 
 
-pl = schedule.generatePeriodList(dayISchedulePeriodList, cycleDay, isWednesday)
+pl = schedule.generatePeriodList(dayISchedulePeriodList, cycleDay, isWednesday = (weekday == 2))
 for i in pl:
     print(i)
 for i in pl:
@@ -111,7 +130,7 @@ for i in range(-700,120):
             else:
                 print(sch.getPeriodSymbol(), "→", sch.getPeriodName(lookahead=1), sch.getPeriodSymbol(lookahead=1), sch.getPeriodTimeTil(lookahead=1), "               ", end="\r")
         except:
-            print("fixme: error on newProvider.py line 116")
+            print("fixme: error on newProvider.py line 115")
             break
     else:
         print("Wait →", sch.getPeriodName(), sch.getPeriodSymbol(), sch.getPeriodTimeTil(), "               ", end="\r")
