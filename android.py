@@ -1,13 +1,53 @@
 #!/bin/python3
-from provider import infotext, cDay
 import time
 import subprocess
 
 
-subprocess.run(["termux-notification", "-t", "d"+str(cDay), "-c", infotext, "--icon", "filter_"+str(cDay), "--id", "8363", "--ongoing", "--button1", "dismiss", "--button1-action", "termux-notification-remove 8363"])
+from newProvider import sch, cycleDay # Bad code, fix later
+import datetime as dt
+
+import setproctitle
+setproctitle.setproctitle("dailyinfod")
+
+# import newconfig as config
+
+cycleDayStr = str(cycleDay)
+
+def upntf(title, contents):
+    subprocess.run(["termux-notification", "-t", title, "-c", contents, "--icon", "filter_"+cycleDayStr, "--id", "8363", "--ongoing", "--button1", "dismiss", "--button1-action", "killall dailyinfod && sleep 0.1 && termux-notification-remove 8363"])
+
+summary = "["
+
+for i in sch.periodList:
+    try:
+        summary += i["periodSymbol"];
+    except KeyError:
+        pass
+
+summary += "]"
+
+
+while True:
+
+
+    classHasStarted = sch.updatePeriod()
+    if classHasStarted:
+        timeLeft = sch.getPeriodTimeLeft()
+        try:
+            if timeLeft >= dt.timedelta(0):
+                upntf(summary, sch.getPeriodName() + " " + sch.getPeriodSymbol() + " " + str(timeLeft))
+            else:
+                upntf(summary, sch.getPeriodSymbol() + " → " + sch.getPeriodName(lookahead=1) + " " + sch.getPeriodSymbol(lookahead=1) + " " + str(sch.getPeriodTimeTil(lookahead=1)))
+        except:
+            upntf(summary, "fixme: error on android.py line 42")
+            break
+    else:
+        upntf(summary, "Wait → " + sch.getPeriodName() + " " + sch.getPeriodSymbol() + " " + sch.getPeriodTimeTil())
+
+    time.sleep(1)
 
 '''
-age: termux-notification [options]
+usage: termux-notification [options]
 Display a system notification. Content text is specified using -c/--content or read from stdin.                                                                                 Please read --help-actions for help with action arguments.                                --action action          action to execute when pressing the notification
   --alert-once             do not alert when the notification is edited
   --button1 text           text to show on the first notification button
