@@ -1,5 +1,4 @@
 # System
-import argparse
 import datetime as dt
 import time
 
@@ -8,53 +7,25 @@ import calRead
 import schedule
 import newconfig as config
 
-parser = argparse.ArgumentParser(
-                    prog='dailyInfo provider',
-                    description='Provides daily information for school schedule') #,epilog='txt at end of help')
-
-parser.add_argument('--dateoffset', type=int)
-parser.add_argument('--cycleday', type=int, help="override cycle day. Takes precedance over any prompt args")
-parser.add_argument('--dayendtime', type=str, help="not implemented")
-parser.add_argument('-p', '--prompt_offset', type=str, help="y,Y,yEs,trUe/n,N,nO,faLse")
-parser.add_argument('--prompt_cycleday', type=str, help="y,Y,yEs,trUe/n,N,nO,faLse")
-
-args = parser.parse_args()
-
-
-if args.cycleday is not None:
-    cycleDay = args.cycleday
+if config.cycle_day_override is not None:
+    assert 1 <= config.cycle_day_override <= 8
+    cycleDay = config.cycle_day_override
 else:
-    offset = args.dateoffset
+    offset = config.date_offset
     if offset is None:
         offset = 0
     
-    if args.prompt_offset is None:
-        pb = config.prompt_offset
-        assert type(pb) is bool
-        print("args.prompt is default is", pb)
-    elif args.prompt_offset.lower() in ['y','yes','true']:
-        print("args.prompt is true")
-        pb = True
-    elif args.prompt_offset.lower() in ['n','no','false']:
-        print("args.prompt is false")
-        pb = False
-    else:
-        pb = config.prompt_offset
-        assert type(pb) is bool
-        print("args.prompt is default is", pb)
-
-    if pb:
-        try:
-            offset = int(input("offset > "))
-        except:
-            print("-> 0")
-
-
     cycleDay = calRead.cycleDay(offset, verbose=True)
+
+
+currentDatetime = dt.datetime.now() # do not change since otherwise it will not work
 
 # Check day of week
 
-weekday = dt.datetime.now().weekday()
+if config.weekday_override is not None:
+    weekday = config.weekday_override
+else:
+    weekday = currentDatetime.weekday()
 '''
 match weekday:
     case 2:
@@ -66,50 +37,18 @@ match weekday:
 '''
 
 
-dayISchedulePeriodList = [
-        {
-            "eaLunch": True,
-            "periodName":"Composing",
-            "periodSymbol":"🎻",
-        },
-        {
-            "eaLunch": True,
-            "periodName":"Computer Scinece",
-            "periodSymbol":"💻",
-        },
-        {
-            "eaLunch": True,
-            "periodName":"Wayfinding",
-            "periodSymbol":"🧭",
-        },
-        {
-            "eaLunch": False,
-            "periodName":"Division 201",
-            "periodSymbol":"➗",
-        },
-        {
-            "eaLunch": False,
-            "periodName":"Cryptography II",
-            "periodSymbol":"📜",
-        },
-        {
-            "eaLunch": True,
-            "periodName":"Potion-making",
-            "periodSymbol":"🧪",
-        },
-        {
-            "eaLunch": False,
-            "periodName":"Magic Charms 101",
-            "periodSymbol":"🪄",
-        },
-        {
-            "periodName":"Free",
-            "periodSymbol":"🆓",
-        },
-]
 
 
-pl = schedule.generatePeriodList(dayISchedulePeriodList, cycleDay, isWednesday = (weekday == 2))
+if config.period_list_override is not None:
+    pl = config.period_list_override
+else:
+    pl: list = schedule.generatePeriodList(config.base_period_list, cycleDay, isWednesday = (weekday == 2), 
+                                 datetimesOverrideFunction = config.datetimes_override_function,
+                                 durationsOverrideFunction = config.durations_override_function,
+                                 periodOrderOverride = config.period_order_override,
+                                 periodIndexListOverride = config.period_index_list_override
+                                 )
+
 for i in pl:
     print(i)
 for i in pl:
