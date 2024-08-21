@@ -14,7 +14,7 @@ setproctitle.setproctitle("dailyinfod")
 cycleDayStr = str(cycleDay)
 
 def upntf(title, contents):
-    subprocess.run(["termux-notification", "-t", title, "-c", contents, "--icon", "filter_"+cycleDayStr, "--id", "8363", "--ongoing", "--button1", "dismiss", "--button1-action", "killall dailyinfod && sleep 0.1 && termux-notification-remove 8363"])
+    subprocess.run(["termux-notification", "-t", title, "-c", contents, "--icon", "filter_"+cycleDayStr, "--id", "8363", "--ongoing", "--button1", "dismiss", "--button1-action", "killall dailyinfod; sleep 0.1 && termux-notification-remove 8363"])
 
 summary = "["
 
@@ -44,8 +44,9 @@ while True:
     else:
         upntf(summary, "Wait → " + sch.getPeriodName() + " " + sch.getPeriodSymbol() + " " + sch.getPeriodTimeTil())
 
-    time.sleep(1)
 
+    timeToWait = (1000000 - sch.currentDatetime.microsecond) /  1000000
+    time.sleep(timeToWait)
 '''
 usage: termux-notification [options]
 Display a system notification. Content text is specified using -c/--content or read from stdin.                                                                                 Please read --help-actions for help with action arguments.                                --action action          action to execute when pressing the notification

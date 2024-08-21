@@ -31,4 +31,6 @@ while True:
     else:
         print(summary, "Wait →", sch.getPeriodName(), sch.getPeriodSymbol(), sch.getPeriodTimeTil(), "               ", end="\r")
 
-    time.sleep(1)
+    timeToWait = (1000000 - sch.currentDatetime.microsecond) /  1000000
+    time.sleep(timeToWait)
+
