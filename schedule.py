@@ -104,6 +104,7 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
 
     try:
         eaLunch = periodList[3]["eaLunch"] # check period 4
+        print("eal", periodList[3])
     except KeyError:
         eaLunch = None # Just a dummy value, does not matter anyway
 

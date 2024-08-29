@@ -1,13 +1,14 @@
 import requests
 import icalendar
 from datetime import datetime, timedelta
+from newconfig import calRead_link, calRead_Lstrip
 
 def printIf(condition, *args, end='\n', sep=' ', flush=False):
     if condition:
         print(*args, end=end, sep=sep, flush=flush)
 
 def cycleDay(dDay=0, verbose=False):
-    url = "https://site redacted/calendar/calendar_7187.ics"
+    url = calRead_link
 
     # Fetch the iCal file
     response = requests.get(url, timeout=10)
@@ -33,7 +34,7 @@ def cycleDay(dDay=0, verbose=False):
                 if start.dt == today:
                     printIf(verbose,f"cal: Event: {summary}")
                     try:
-                        cycle=int(summary.lstrip("SS Cycle Day "))
+                        cycle=int(summary.lstrip(calRead_Lstrip))
                         printIf(verbose, f"cal: extracted day: {cycle}")
                         if not (0 < cycle < 9):
                             printIf(verbose,"oh no. Cycle day outofRange")

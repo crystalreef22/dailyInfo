@@ -3,7 +3,7 @@ import time
 import subprocess
 
 
-from newProvider import sch, cycleDay # Bad code, fix later
+from newProvider import sch, cycleDay, pl2 # Bad code, fix later
 import datetime as dt
 
 import setproctitle
@@ -26,6 +26,16 @@ for i in sch.periodList:
 
 summary += "]"
 
+summary2 = "» ["
+
+for i in pl2:
+    try:
+        summary2 += i["periodSymbol"];
+    except KeyError:
+        pass
+
+summary2 += "]"
+
 
 while True:
 
@@ -36,17 +46,18 @@ while True:
         try:
             if timeLeft >= dt.timedelta(0):
                 upntf(summary, sch.getPeriodName() + " " + sch.getPeriodSymbol() + " " + str(timeLeft))
+                time.sleep(20)
             else:
                 upntf(summary, sch.getPeriodSymbol() + " → " + sch.getPeriodName(lookahead=1) + " " + sch.getPeriodSymbol(lookahead=1) + " " + str(sch.getPeriodTimeTil(lookahead=1)))
+                time.sleep(1)
         except:
-            upntf(summary, "fixme: error on android.py line 42")
+            upntf(summary, summary2)
             break
     else:
-        upntf(summary, "Wait → " + sch.getPeriodName() + " " + sch.getPeriodSymbol() + " " + sch.getPeriodTimeTil())
+        upntf(summary, "Wait → " + sch.getPeriodName() + " " + sch.getPeriodSymbol() + " " + str(sch.getPeriodTimeTil()))
+        time.sleep(1)
 
 
-    timeToWait = (1000000 - sch.currentDatetime.microsecond) /  1000000
-    time.sleep(timeToWait)
 '''
 usage: termux-notification [options]
 Display a system notification. Content text is specified using -c/--content or read from stdin.                                                                                 Please read --help-actions for help with action arguments.                                --action action          action to execute when pressing the notification

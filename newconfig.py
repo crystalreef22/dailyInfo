@@ -5,55 +5,57 @@ import datetime as dt
 
 _ = dt
 
-date_offset: int = 9
+date_offset: int = 0
 cycle_day_override: int | None = None
-day_end_time: str = "not implemented yet- ignore"
-weekday_override: int | None = 0 # 0 is monday, useful if a day follows non-wednesday schedule
+weekday_override: int | None = None # 0 is monday, useful if a day follows non-wednesday schedule
 
 
 
 base_period_list = [ # For day I schedule
         {
-            "eaLunch": True,
-            "periodName":"Composing",
+            "eaLunch": False,
+            "periodName":"Orchestra",
             "periodSymbol":"🎻",
         },
         {
-            "eaLunch": True,
+            "eaLunch": False,
             "periodName":"Computer Scinece",
             "periodSymbol":"💻",
         },
         {
-            "eaLunch": True,
-            "periodName":"Wayfinding",
+            "eaLunch": None,
+            "periodName":"Free",
+            "periodSymbol":"🆓",
+        },
+        {
+            "eaLunch": False,
+            "periodName":"History",
             "periodSymbol":"🧭",
         },
         {
-            "eaLunch": False,
-            "periodName":"Division 201",
+            "eaLunch": True,
+            "periodName":"Calculus",
             "periodSymbol":"➗",
         },
         {
+            "eaLunch": True,
+            "periodName":"English",
+            "periodSymbol":"📝",
+        },
+        {
             "eaLunch": False,
-            "periodName":"Cryptography II",
+            "periodName":"Latin",
             "periodSymbol":"📜",
         },
         {
             "eaLunch": True,
-            "periodName":"Potion-making",
-            "periodSymbol":"🧪",
-        },
-        {
-            "eaLunch": False,
-            "periodName":"Magic Charms 101",
-            "periodSymbol":"🪄",
-        },
-        {
-            "periodName":"Free",
-            "periodSymbol":"🆓",
+            "periodName":"Biology",
+            "periodSymbol":"🧬",
         },
 ]
 
+calRead_Lstrip = "SS Cycle Day "
+calRead_link = "https://site redacted/data/calendar/calendar_16475.ics"
 
 datetimes_override_function = None # None or function(bool: eaLunch) -> list[dt.datetime]
 durations_override_function = None # None for calculate from datetimes (with 5 minute passing) or
@@ -130,3 +132,11 @@ period_list_override = [
      }
 ]
 '''
+
+
+def d(h,m):
+    return dt.datetime.combine(dt.date.today(), dt.time(h,m))
+
+def t(m):
+    return dt.timedelta(minutes=m)
+

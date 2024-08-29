@@ -78,3 +78,18 @@ print("eaLunch:",sch.getEaLunch())
 #         print("Wait →", sch.getPeriodName(), sch.getPeriodSymbol(), sch.getPeriodTimeTil(), "               ", end="\r")
 # 
 #     time.sleep(0.05)
+
+
+
+cycleDay2 = cycleDay + 1
+if cycleDay2 == 9:
+    cycleDay2 = 1
+
+
+
+pl2: list = schedule.generatePeriodList(config.base_period_list, cycleDay2, 
+                                 datetimesOverrideFunction = config.datetimes_override_function,
+                                 durationsOverrideFunction = config.durations_override_function,
+                                 periodOrderOverride = config.period_order_override,
+                                 periodIndexListOverride = config.period_index_list_override
+                                 )
