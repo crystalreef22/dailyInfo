@@ -134,9 +134,4 @@ period_list_override = [
 '''
 
 
-def d(h,m):
-    return dt.datetime.combine(dt.date.today(), dt.time(h,m))
-
-def t(m):
-    return dt.timedelta(minutes=m)
 

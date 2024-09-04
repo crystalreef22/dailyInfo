@@ -87,9 +87,13 @@ if cycleDay2 == 9:
 
 
 
+
+
 pl2: list = schedule.generatePeriodList(config.base_period_list, cycleDay2, 
                                  datetimesOverrideFunction = config.datetimes_override_function,
                                  durationsOverrideFunction = config.durations_override_function,
                                  periodOrderOverride = config.period_order_override,
-                                 periodIndexListOverride = config.period_index_list_override
+                                 periodIndexListOverride = config.period_index_list_override,
                                  )
+
+

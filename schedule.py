@@ -1,5 +1,6 @@
 import datetime as dt
 import time
+import copy
 
 class schedule:
     def __init__(self, periodList):
@@ -16,9 +17,9 @@ class schedule:
         except KeyError:
             return None
 
-    def updatePeriod(self, testDeltaTime = dt.timedelta(0)) -> bool:
+    def updatePeriod(self) -> bool:
         '''return false if class has not started yet'''
-        self.currentDatetime = dt.datetime.now() + testDeltaTime
+        self.currentDatetime = dt.datetime.now()
         i = None
         for i, period in enumerate(self.periodList):
             # t = dt.datetime.combine(self.currentDatetime.date(), period["time"])
@@ -36,6 +37,7 @@ class schedule:
 
         # period = self.periodList[i]
 
+        
         if i == -1:
             self.currentPeriodIndex = 0
             return False
@@ -88,6 +90,8 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
     if currentDate is None:
         currentDate = dt.datetime.now().date()
 
+    
+
     if periodIndexListOverride is None:
         periodOrder = [0,3,6,4,7,10]
         if periodOrderOverride is not None:
@@ -98,16 +102,19 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
         periodIndexList = [(item + cycleDay - 1) % 8 for item in periodOrder]
     else:
         periodIndexList = periodIndexListOverride
+    
 
 
-    periodList = [dayISchedulePeriodList[item] for item in periodIndexList]
+    periodList = [copy.deepcopy(dayISchedulePeriodList[item]) for item in periodIndexList]
 
+    
     try:
         eaLunch = periodList[3]["eaLunch"] # check period 4
         print("eal", periodList[3])
     except KeyError:
         eaLunch = None # Just a dummy value, does not matter anyway
 
+    
     
 
     # Fixme: this part does not work
@@ -129,6 +136,7 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
     else:
         durations = durationsOverrideFunction(eaLunch)
 
+    
     # now loop through periodList and add times and touchups like removal of free periods and expansion of double sciences if applicable, and period number
     ip = 0
     for i in range(len(periodList)):
@@ -139,6 +147,7 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
         periodList[i]["type"] = "standard"
         periodList[i].pop("eaLunch", None)
 
+    
     finalPeriodList = []
     for i in range(len(periodList)):
         if i == 2:
@@ -165,6 +174,7 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
                     }
                 )
         finalPeriodList.append(periodList[i])
+        
 
     finalPeriodList.append(
         {
