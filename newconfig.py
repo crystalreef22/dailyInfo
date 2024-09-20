@@ -57,13 +57,15 @@ base_period_list = [ # For day I schedule
 calRead_Lstrip = "SS Cycle Day "
 calRead_link = "https://site redacted/data/calendar/calendar_16475.ics"
 
+'''
 def plovHOCO(eaLunch):
     ties =     ["8:15", "9:10","10:05","10:05","11:00", "11:35" if eaLunch else "11:50", "12:30", "13:25", "14:20", "13:05"]
     currentDate = dt.datetime.now().date()
     return [dt.datetime.combine(currentDate, dt.datetime.strptime(x,"%H:%M").time()) for x in ties]
+'''
 
 
-datetimes_override_function = plovHOCO # None or function(bool: eaLunch) -> list[dt.datetime]
+datetimes_override_function = None # None or function(bool: eaLunch) -> list[dt.datetime]
 durations_override_function = None # None for calculate from datetimes (with 5 minute passing) or
                                    # function(bool: eaLunch) -> list[timedelta]
 
