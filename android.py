@@ -9,7 +9,7 @@ import datetime as dt
 import setproctitle
 setproctitle.setproctitle("dailyinfod")
 
-# import newconfig as config
+# import config
 
 cycleDayStr = str(cycleDay)
 

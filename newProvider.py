@@ -5,7 +5,7 @@ import time
 # User
 import calRead
 import schedule
-import newconfig as config
+import config
 
 if config.cycle_day_override is not None:
     assert 1 <= config.cycle_day_override <= 8

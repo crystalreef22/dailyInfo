@@ -11,7 +11,7 @@ import setproctitle
 setproctitle.setproctitle("dailyinfod")
 
 
-# import newconfig as config
+# import config
 
 cycleDayStr = "[D" + str(cycleDay) + "]"
 

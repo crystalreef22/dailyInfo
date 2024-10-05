@@ -1,7 +1,7 @@
 import requests
 import icalendar
 from datetime import datetime, timedelta
-from newconfig import calRead_link, calRead_Lstrip
+from config import calRead_link, calRead_Lstrip
 
 def printIf(condition, *args, end='\n', sep=' ', flush=False):
     if condition:

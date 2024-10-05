@@ -6,7 +6,7 @@ from newProvider import sch, cycleDay, pl2 # Bad code, fix later
 import datetime as dt
 
 
-# import newconfig as config
+# import config
 
 cycleDayStr = str(cycleDay)
 
