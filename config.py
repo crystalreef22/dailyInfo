@@ -59,6 +59,24 @@ base_period_list = [ # For day I schedule
 calRead_Lstrip = "SS Cycle Day "
 calRead_link = calRead_link_secretbase + "/data/calendar/calendar_16475.ics"
 
+clubOrAssembly_name_by_weekday = [
+        "Assembly",
+        "Designated Rooms",
+        "Unknown Error Assembly",
+        "Clubs",
+        "Assembly",
+        "Error 21", "Error 22"
+]
+clubOrAssembly_symbol_by_weekday = [
+        "🏛️",
+        "📚",
+        "🚫",
+        "🎨",
+        "🏛️",
+        "E21",
+        "E22"
+]
+
 '''
 def plovHOCO(eaLunch):
     ties =     ["8:15", "9:10","10:05","10:05","11:00", "11:35" if eaLunch else "11:50", "12:30", "13:25", "14:20", "13:05"]

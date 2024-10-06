@@ -1,5 +1,4 @@
 import datetime as dt
-import time
 import copy
 
 class schedule:
@@ -76,7 +75,8 @@ class schedule:
 
 
 
-def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday: bool = False, datetimesOverrideFunction = None, durationsOverrideFunction = None, periodOrderOverride = None, periodIndexListOverride = None, currentDate = None) -> list:
+def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday: bool, 
+                       weekday: int, clubOrAssemblyNameByWeekday: list, clubOrAssemblySymbolByWeekday: list, datetimesOverrideFunction = None, durationsOverrideFunction = None, periodOrderOverride = None, periodIndexListOverride = None, currentDate = None) -> list:
     '''
     periodOrderOverride: reorders the list as such: [1,2,3,4,5,6] or None is normal, [1,2,3,5,4,6] is period 5 and 4 switched, etc.
     periodIndexListOverride: controls how we take from the dayISchedulePeriodList: default is [0,3,6,4,7,10], corresponding to birdybirdybirdybird's method of +3, +3, -2, +3, +3
@@ -157,8 +157,8 @@ def generatePeriodList(dayISchedulePeriodList: list, cycleDay: int, isWednesday:
                         "datetime": times[2],
                         "duration": durations[2],
                         "type": "clubOrAssembly",
-                        "periodName" : "club or assembly",
-                        "periodSymbol" : "🏛️",
+                        "periodName" : clubOrAssemblyNameByWeekday[weekday],
+                        "periodSymbol" : clubOrAssemblySymbolByWeekday[weekday],
                     })
             else:
                 print("!!!!!!!!!!!!!!!!! Skipping club period")

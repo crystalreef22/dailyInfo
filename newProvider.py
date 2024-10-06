@@ -1,12 +1,12 @@
 # System
 import datetime as dt
-import time
 
 # User
 import calRead
 import schedule
 import config
 
+offset = 0
 if config.cycle_day_override is not None:
     assert 1 <= config.cycle_day_override <= 8
     cycleDay = config.cycle_day_override
@@ -26,6 +26,8 @@ if config.weekday_override is not None:
     weekday = config.weekday_override
 else:
     weekday = currentDatetime.weekday()
+    weekday += offset
+    weekday %= 7
 '''
 match weekday:
     case 2:
@@ -42,7 +44,10 @@ match weekday:
 if config.period_list_override is not None:
     pl = config.period_list_override
 else:
-    pl: list = schedule.generatePeriodList(config.base_period_list, cycleDay, isWednesday = (weekday == 2), 
+    pl: list = schedule.generatePeriodList(config.base_period_list, cycleDay, isWednesday = (weekday == 2),
+                                                                              weekday = weekday, 
+            clubOrAssemblyNameByWeekday = config.clubOrAssembly_name_by_weekday,
+            clubOrAssemblySymbolByWeekday = config.clubOrAssembly_symbol_by_weekday,
                                  datetimesOverrideFunction = config.datetimes_override_function,
                                  durationsOverrideFunction = config.durations_override_function,
                                  periodOrderOverride = config.period_order_override,
@@ -89,7 +94,10 @@ if cycleDay2 == 9:
 
 
 
-pl2: list = schedule.generatePeriodList(config.base_period_list, cycleDay2, isWednesday = (weekday == 1), # Tuesday -> Wednesday
+pl2: list = schedule.generatePeriodList(config.base_period_list, cycleDay2, isWednesday = (weekday == 1),
+                                                        weekday = ( (weekday + 1) % 7), # Tuesday -> Wednesday
+            clubOrAssemblyNameByWeekday = config.clubOrAssembly_name_by_weekday,
+            clubOrAssemblySymbolByWeekday = config.clubOrAssembly_symbol_by_weekday,
                                  datetimesOverrideFunction = config.datetimes_override_function,
                                  durationsOverrideFunction = config.durations_override_function,
                                  periodOrderOverride = config.period_order_override,
