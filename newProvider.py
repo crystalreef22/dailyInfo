@@ -89,7 +89,7 @@ if cycleDay2 == 9:
 
 
 
-pl2: list = schedule.generatePeriodList(config.base_period_list, cycleDay2, 
+pl2: list = schedule.generatePeriodList(config.base_period_list, cycleDay2, isWednesday = (weekday == 1), # Tuesday -> Wednesday
                                  datetimesOverrideFunction = config.datetimes_override_function,
                                  durationsOverrideFunction = config.durations_override_function,
                                  periodOrderOverride = config.period_order_override,
