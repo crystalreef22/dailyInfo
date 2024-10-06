@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/Users/etn/Programming/py-venv/bin/python3
 
 import time
 import subprocess
