@@ -1,6 +1,8 @@
 # Important: do not delete any of those variables or error may occur
 # Todo: import defaultConfig.py
 
+from configSecret import *
+
 import datetime as dt
 
 _ = dt
@@ -55,7 +57,7 @@ base_period_list = [ # For day I schedule
 ]
 
 calRead_Lstrip = "SS Cycle Day "
-calRead_link = "https://site redacted/data/calendar/calendar_16475.ics"
+calRead_link = calRead_link_secretbase + "/data/calendar/calendar_16475.ics"
 
 '''
 def plovHOCO(eaLunch):
