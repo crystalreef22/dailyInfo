@@ -168,42 +168,42 @@ period_list_override = [
       'datetime': dt.datetime(2025, 2, 1, 9, 00),
       'duration': dt.timedelta(seconds=3000),
       'periodName': '',
-      'periodSymbol': '1',
+      'periodSymbol': '1-',
       'type': 'standard'
      },
      {
       'datetime': dt.datetime(2025, 2, 1, 10, 00),
       'duration': dt.timedelta(seconds=3000),
-      'periodName': '',
-      'periodSymbol': '2',
+      'periodName': 'Bungee',
+      'periodSymbol': '2*',
       'type': 'standard'
      },
      {
       'datetime': dt.datetime(2025, 2, 1, 11, 00),
       'duration': dt.timedelta(seconds=3000),
       'periodName': '',
-      'periodSymbol': '3',
+      'periodSymbol': '3-',
       'type': 'standard'
      },
      {
       'datetime': dt.datetime(2025, 2, 1, 12, 30),
       'duration': dt.timedelta(seconds=3000),
       'periodName': '',
-      'periodSymbol': '4',
+      'periodSymbol': '4-',
       'type': 'standard'
      },
      {
       'datetime': dt.datetime(2025, 2, 1, 1, 30),
       'duration': dt.timedelta(seconds=3000),
-      'periodName': '',
-      'periodSymbol': '4',
+      'periodName': 'Optics',
+      'periodSymbol': '5*',
       'type': 'standard'
      },
      {
       'datetime': dt.datetime(2025, 2, 1, 2, 30),
       'duration': dt.timedelta(seconds=3000),
-      'periodName': '',
-      'periodSymbol': '4',
+      'periodName': 'Robot',
+      'periodSymbol': '6*',
       'type': 'standard'
      },
      {
