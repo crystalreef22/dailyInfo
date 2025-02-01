@@ -8,7 +8,7 @@ import datetime as dt
 _ = dt
 
 date_offset: int = 0
-cycle_day_override: int | None = 0
+cycle_day_override: int | None = 1
 weekday_override: int | None = None # 0 is monday, useful if a day follows non-wednesday schedule
 
 
