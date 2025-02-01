@@ -8,7 +8,7 @@ import datetime as dt
 _ = dt
 
 date_offset: int = 0
-cycle_day_override: int | None = None
+cycle_day_override: int | None = 0
 weekday_override: int | None = None # 0 is monday, useful if a day follows non-wednesday schedule
 
 
@@ -71,7 +71,7 @@ clubOrAssembly_symbol_by_weekday = [
         "🏛️",
         "📚",
         "🚫",
-        "🎨",
+        "♣︎ ",
         "🏛️",
         "E21",
         "E22"
@@ -163,3 +163,50 @@ period_list_override = [
 
 
 
+period_list_override = [
+     {
+      'datetime': dt.datetime(2025, 2, 1, 9, 00),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': '',
+      'periodSymbol': '1',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 2, 1, 10, 00),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': '',
+      'periodSymbol': '2',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 2, 1, 11, 00),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': '',
+      'periodSymbol': '3',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 2, 1, 12, 30),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': '',
+      'periodSymbol': '4',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 2, 1, 1, 30),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': '',
+      'periodSymbol': '4',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 2, 1, 2, 30),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': '',
+      'periodSymbol': '4',
+      'type': 'standard'
+     },
+     {
+      'eaLunch': False, 'type': 'info'
+     }
+]
