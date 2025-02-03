@@ -207,6 +207,13 @@ period_list_override = [
       'type': 'standard'
      },
      {
+      'datetime': dt.datetime(2025, 2, 1, 2, 30),
+      'duration': dt.timedelta(seconds=3000),
+      'periodName': 'test',
+      'periodSymbol': '',
+      'type': 'standard'
+     },
+     {
       'eaLunch': False, 'type': 'info'
      }
 ]
