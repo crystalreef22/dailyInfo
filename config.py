@@ -165,51 +165,51 @@ period_list_override = [
 
 period_list_override = [
      {
-      'datetime': dt.datetime(2025, 2, 1, 9, 00),
-      'duration': dt.timedelta(seconds=3000),
+      'datetime': dt.datetime(2025, 4, 26, 8, 30),
+      'duration': dt.timedelta(seconds=3600),
       'periodName': '',
-      'periodSymbol': '1-',
+      'periodSymbol': '1- ',
       'type': 'standard'
      },
      {
-      'datetime': dt.datetime(2025, 2, 1, 10, 00),
-      'duration': dt.timedelta(seconds=3000),
-      'periodName': 'Bungee',
-      'periodSymbol': '2*',
-      'type': 'standard'
-     },
-     {
-      'datetime': dt.datetime(2025, 2, 1, 11, 00),
-      'duration': dt.timedelta(seconds=3000),
-      'periodName': '',
-      'periodSymbol': '3-',
-      'type': 'standard'
-     },
-     {
-      'datetime': dt.datetime(2025, 2, 1, 12, 30),
-      'duration': dt.timedelta(seconds=3000),
-      'periodName': '',
-      'periodSymbol': '4-',
-      'type': 'standard'
-     },
-     {
-      'datetime': dt.datetime(2025, 2, 1, 1, 30),
-      'duration': dt.timedelta(seconds=3000),
+      'datetime': dt.datetime(2025, 4, 26, 9, 40),
+      'duration': dt.timedelta(seconds=3600),
       'periodName': 'Optics',
-      'periodSymbol': '5*',
+      'periodSymbol': '2O ',
       'type': 'standard'
      },
      {
-      'datetime': dt.datetime(2025, 2, 1, 2, 30),
-      'duration': dt.timedelta(seconds=3000),
+      'datetime': dt.datetime(2025, 4, 26, 10, 50),
+      'duration': dt.timedelta(seconds=3600),
       'periodName': 'Robot',
-      'periodSymbol': '6*',
+      'periodSymbol': '3R ',
       'type': 'standard'
      },
      {
-      'datetime': dt.datetime(2025, 2, 1, 2, 30),
-      'duration': dt.timedelta(seconds=3000),
-      'periodName': 'test',
+      'datetime': dt.datetime(2025, 4, 26, 12, 00),
+      'duration': dt.timedelta(seconds=3600),
+      'periodName': '',
+      'periodSymbol': '4- ',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 4, 26, 1, 10),
+      'duration': dt.timedelta(seconds=3600),
+      'periodName': '',
+      'periodSymbol': '5- ',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 4, 26, 2, 20),
+      'duration': dt.timedelta(seconds=3600),
+      'periodName': '',
+      'periodSymbol': '6- ',
+      'type': 'standard'
+     },
+     {
+      'datetime': dt.datetime(2025, 4, 26, 4, 30),
+      'duration': dt.timedelta(seconds=3600),
+      'periodName': 'testytest',
       'periodSymbol': '',
       'type': 'standard'
      },
